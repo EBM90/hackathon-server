@@ -77,10 +77,37 @@ router.post(
   }
 );
 
+router.post(
+"/guest",
+isNotLoggedIn(),
+async (req, res, next) => {
+  console.log(req.body)
+  const { username } = req.body;
+  if (!username) {
+    return
+  }
+      req.session.currentUser = {username, _id:'uniqueId' };
+      res.status(200).json(req.session.currentUser);
+      return;
+}
+);
+
+
 // POST '/logout'
 
 // revisa si el usuario está logueado usando la función helper (chequea si la sesión existe), y luego destruimos la sesión
-router.post("/logout", isLoggedIn(), (req, res, next) => {
+router.post(
+  "/logout", 
+  isLoggedIn(), 
+  async (req, res, next) => {
+    console.log(req.body)
+  if(req.body.user){
+    const thisRoom = await Room.findOneAndUpdate({room:req.body.room}, { $pull:{ users: req.body.user } }, {new:true})
+    console.log(await Room.findOne({room:req.body.room}), 'room:id')
+    if(thisRoom.users.length === 0){
+      await Room.findOneAndDelete({room:req.body.room})
+    }
+  }
   req.session.destroy();
   //  - setea el código de estado y envía de vuelta la respuesta
   res
@@ -88,6 +115,7 @@ router.post("/logout", isLoggedIn(), (req, res, next) => {
     .send();
   return;
 });
+
 
 // GET '/private'   --> Only for testing
 
