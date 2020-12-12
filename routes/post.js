@@ -28,10 +28,17 @@ router.get('/:id', async(req, res, next) => {
 //ADD A COMMENT
 router.post('/:id/addComment', async(req, res, next) => {
     try {
+<<<<<<< HEAD
         console.log(req.body, 'req.body')
         const {id, creator, body, date} = req.body
         const theComment = await Comment.create({creator:creator.username, body, date})
         console.log(theComment, 'theComment')
+=======
+        const {creator, body, date} = req.body
+        console.log(req.body, 'creator')
+        console.log(body, 'body')
+        const theComment = await Comment.create({creator, body, date})
+>>>>>>> d3e2cb820d386a4382033de85bd8ca2e2406586c
         const thePost = await Post.findByIdAndUpdate(req.params.id, {$push:{comments: theComment}}).populate('comments')
         res.json(thePost)  
     } catch (error) {
