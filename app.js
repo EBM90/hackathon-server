@@ -31,7 +31,7 @@ const app = express();
 app.use(
   cors({
     credentials: true,
-    origin: 'https://psycho-russian.herokuapp.com',
+    origin: ['https://psycho-russian.herokuapp.com'],
   })
 );
 
