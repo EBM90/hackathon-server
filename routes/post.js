@@ -5,7 +5,7 @@ const Post = require("../models/post");
 const Comment = require("../models/comment");
 
 // GET ALL POSTS
-router.get('/', async(res, req, next) => {
+router.get('/', async(req, res, next) => {
     try {
         const posts = await Post.find().populate('comments')
         res.json(posts)  
@@ -15,8 +15,9 @@ router.get('/', async(res, req, next) => {
 })
 
 // GET A POST
-router.get('/:id', async(res, req, next) => {
+router.get('/:id', async(req, res, next) => {
     try {
+        console.log(req.params, 'this is the id')
         const thePost = await Post.findById(req.params.id).populate('comments')
         res.json(thePost)  
     } catch (error) {
@@ -25,7 +26,7 @@ router.get('/:id', async(res, req, next) => {
 })
 
 //ADD A COMMENT
-router.post('/:id/addComment', async(res, req, next) => {
+router.post('/:id/addComment', async(req, res, next) => {
     try {
         const {creator, body, date} = req.body
         const theComment = await Comment.create(creator, body, date).populate('creator')
@@ -37,7 +38,7 @@ router.post('/:id/addComment', async(res, req, next) => {
 })
 
 //ADD TO FAVOURITES
-router.post('/:id/addToFav', async(res, req, next) => {
+router.post('/:id/addToFav', async(req, res, next) => {
     try {
         const thePost = await Post.findById(req.params.id).populate('comments')
         const theUser = await User.findByIdAndUpdate(req.session.currentUser._id, {$push:{favPost: thePost}})
@@ -48,7 +49,7 @@ router.post('/:id/addToFav', async(res, req, next) => {
 })
 
 //DELETE A COMMENT
-router.delete('/:id/deleteComment/:commentId', async(res, req, next) => {
+router.delete('/:id/deleteComment/:commentId', async(req, res, next) => {
     try {
         const theComment = await Comment.findByIdAndDelete(req.params.commentId)
         const thePost = await Post.findByIdAndUpdate(req.params.id, {$pull:{comments: theComment}}).populate('comments')
