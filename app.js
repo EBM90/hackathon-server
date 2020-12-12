@@ -36,7 +36,7 @@ app.use(
 );
 
 app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', 'https://psycho-russian.herokuapp.com/login');
+  res.setHeader('Access-Control-Allow-Origin', 'https://psycho-russian.herokuapp.com');
   res.setHeader('Access-Control-Allow-Methods', 'GET, PUT, POST, OPTIONS, DELETE');
   res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
   res.setHeader('Access-Control-Allow-Credentials', true);
