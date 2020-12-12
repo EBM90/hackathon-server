@@ -32,9 +32,7 @@ app.use(
   cors({
     credentials: true,
     origin: [
-      process.env.PUBLIC_DOMAIN,
-      "https://ironpadel.herokuapp.com",
-      "http://ironpadel.herokuapp.com",
+      process.env.PUBLIC_DOMAIN
     ],
   })
 );
